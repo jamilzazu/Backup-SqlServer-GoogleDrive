@@ -15,17 +15,23 @@ namespace BackupSqlServerGoogleDrive
     {
         public static void FullBackup()
         {
-            string customer = "MAR";
+            string customer = "FOLDER";
             string folderPath = @"C:\Program Files\" + customer + @"\";
-            string serverName = @"(LocalDb)\MSSQLLocalDB";
-            string database = @"Acordos";
+            string serverName = @"SERVERNAME";
+            string user = @"BACKUP";
+            string password = @"PASSWORD";
+            string database = @"DATABASE";
             string fileName = string.Format("{0}_{1:yyyyMMdd_HHmmss}.bak", database, DateTime.Now);
 
             ExistsFolder(folderPath);
 
-            Console.WriteLine("Arquivo: --------------------> " + fileName);
+            Console.WriteLine("file: --------------------> " + fileName);
 
             Server server = new Server(serverName);
+            server.ConnectionContext.LoginSecure = false;
+            server.ConnectionContext.Login = user;
+            server.ConnectionContext.Password = password;
+
             Backup bkpDBFull = new Backup();
 
             bkpDBFull.Action = BackupActionType.Database;
